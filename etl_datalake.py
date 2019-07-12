@@ -12,8 +12,8 @@ from pyspark import SparkConf
 config = configparser.ConfigParser()
 config.read('dl.cfg')
 
-os.environ['AWS_ACCESS_KEY_ID']= 'AKIAZ37S7EF6LCYLWPSR'
-os.environ['AWS_SECRET_ACCESS_KEY']= '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'
+os.environ['AWS_ACCESS_KEY_ID']= ''
+os.environ['AWS_SECRET_ACCESS_KEY']= ''
 
 def create_spark_session():
     spark = SparkSession \
