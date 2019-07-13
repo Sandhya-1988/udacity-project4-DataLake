@@ -15,8 +15,8 @@ config = configparser.ConfigParser()
 config.read('dl.cfg')
 
 # Enter your AWS ACCESS KEY ID and SECRET ACCESS KEY
-os.environ['AWS_ACCESS_KEY_ID']= config.get("AWS_CREDS","AWS_ACCESS_KEY_ID")
-os.environ['AWS_SECRET_ACCESS_KEY']= config.get("AWS_CREDS","AWS_SECRET_ACCESS_KEY")
+os.environ['AWS_ACCESS_KEY_ID']= 
+os.environ['AWS_SECRET_ACCESS_KEY']= 
 
 def create_spark_session():
     spark = SparkSession \
@@ -31,21 +31,20 @@ def process_song_data(spark, input_data, output_data):
     
     # read song data file
     df = spark.read.json(song_data)
-#     df = spark.read.format('json').load('s3a://udacity-dend/song_data/A/B/C/TRABCEI128F424C983.json')
 
     # extract columns to create songs table
     songs_table = df.select(df['song_id'],df['title'],df['artist_id'],df['year'],df['duration'])
     songs_table.show(n=5)
     
     # write songs table to parquet files partitioned by year and artist
-    songs_table.write.partitionBy('artist_id','year').parquet("s3a://udacity-bucket-demo-sandhya/tables/Song_Table",mode = 'overwrite')
+    songs_table.write.partitionBy('artist_id','year').parquet("",mode = 'overwrite')
 
     # extract columns to create artists table
     artists_table =df.select(df['artist_id'],df['artist_name'],df['artist_location'],df['artist_latitude'],df['artist_longitude'])
     artists_table.show(n=5)
 
     # write artists table to parquet files
-    artists_table.write.parquet("s3a://udacity-bucket-demo-sandhya/tables/Artist_Table",mode = 'overwrite')
+    artists_table.write.parquet("",mode = 'overwrite')
 
 
 def process_log_data(spark, input_data, output_data):
@@ -55,7 +54,6 @@ def process_log_data(spark, input_data, output_data):
 #      read log data file
     df = spark.read.json(log_data)
     print(df)
-#     df = spark.read.format('json').load('s3a://udacity-dend/log_data/*')
     
 #      filter by actions for song plays
     df = df[df['page'] == 'NextSong']
@@ -67,7 +65,7 @@ def process_log_data(spark, input_data, output_data):
     users_table = df.select(df['userId'],df['firstName'],df['lastName'],df['gender'],df['level'])
     
 #      write users table to parquet files
-    users_table.write.parquet("s3a://udacity-bucket-demo-sandhya/tables/User_Table", mode = 'overwrite')
+    users_table.write.parquet("", mode = 'overwrite')
 
 #      create timestamp column from original timestamp column
     get_timestamp = F.udf(lambda x: str(int(int(x) / 1000)))
@@ -85,11 +83,11 @@ def process_log_data(spark, input_data, output_data):
     
     
 #      write time table to parquet files partitioned by year and month
-    time_table.write.parquet("s3a://udacity-bucket-demo-sandhya/tables/Time_Table", mode = 'overwrite')
+    time_table.write.parquet("", mode = 'overwrite')
 #     time_table.show(n=5)
 
 #      read in song data to use for songplays table
-    song_df = spark.read.parquet("s3a://udacity-bucket-demo-sandhya/tables/Song_Table")
+    song_df = spark.read.parquet("")
 
 #      extract columns from joined song and log datasets to create songplays table 
     song_df.createOrReplaceTempView('songView')
@@ -116,7 +114,7 @@ def process_log_data(spark, input_data, output_data):
     songplay.write.partitionBy("year","month").parquet("file:///tmp/songplaydata", mode ='overwrite')
     
     sp_df = spark.read.parquet("file:///tmp/songplaydata")
-    sp_df.write.parquet("s3a://udacity-bucket-demo-sandhya/tables/songplays_Table", mode = 'overwrite')
+    sp_df.write.parquet("", mode = 'overwrite')
 
     sp_df.createOrReplaceTempView("songParquet")
     
@@ -125,7 +123,7 @@ def process_log_data(spark, input_data, output_data):
 def main(): 
     spark = create_spark_session()
     input_data = "s3a://udacity-dend/"
-    output_data = "s3a://udacity-bucket-demo-sandhya/tables/"
+    output_data = ""
     
     process_song_data(spark, input_data, output_data)    
     process_log_data(spark, input_data, output_data)
