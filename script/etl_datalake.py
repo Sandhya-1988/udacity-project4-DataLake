@@ -100,7 +100,7 @@ def process_log_data(spark, input_data, output_data):
                                  lv.location  as location,
                                  lv.userAgent as user_agent
                                  FROM logView lv
-                                 JOIN songView sv ON (lv.song != sv.title)
+                                 JOIN songView sv ON (lv.song == sv.title)
                        """)
     songplays_table.show(n=5)
 
