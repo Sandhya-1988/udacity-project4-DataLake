@@ -111,7 +111,9 @@ def process_log_data(spark, input_data, output_data):
 
     sp_df = spark.read.parquet("file:///tmp/songplaydata")
     sp_df.write.parquet("s3a://udacity-bucket-demo-sandhya/tables/songplays_Table", mode='overwrite')
-    sp_df.show()
+   
+    sp_df.createOrReplaceTempView("songParquet")
+    spark.sql("SELECT * FROM songParquet").show()
 
 
 def main():
